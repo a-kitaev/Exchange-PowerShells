@@ -1,3 +1,7 @@
+# This script will cycle through all mailboxes to check Admin and Delegate access logs.
+# It will save found log entries into .csv and .html files
+# It will also send email with .html as a body and .csv as attachment
+
 #Add Exchange 2010/2013 snapin if not already loaded in the PowerShell session
 if (!(Get-PSSnapin | where {$_.Name -eq "Microsoft.Exchange.Management.PowerShell.E2010"}))
 {
@@ -80,10 +84,10 @@ $auditlog | Export-CSV "c:\mbx.csv" -NoTypeInformation -Encoding UTF8
 if ($report.count -gt 0)
     {
         Write-Host "Sending email"
-	Send-MailMessage -to "alexander.kitaev@avestragroup.com" -from "exchange@avestragroup.com" -subject "Non-owner mailbox access report" -Body $htmlreport -BodyAsHtml -Encoding ([System.Text.Encoding]::UTF8) -priority High -Attachments "c:\mbx.csv"
+	Send-MailMessage -to "someone@email.com" -from "exchange@email.com" -subject "Non-owner mailbox access report" -Body $htmlreport -BodyAsHtml -Encoding ([System.Text.Encoding]::UTF8) -priority High -Attachments "c:\mbx.csv"
     }
 else
 {
     Write-Host "Nothing to send"
-    Send-MailMessage -to "alexander.kitaev@avestragroup.com" -from "exchange@avestragroup.com" -subject "No non-owner mailbox access detected" -Body $htmlreport -BodyAsHtml -Encoding ([System.Text.Encoding]::UTF8)
+    Send-MailMessage -to "someone@email.com" -from "exchange@email.com" -subject "No non-owner mailbox access detected" -Body $htmlreport -BodyAsHtml -Encoding ([System.Text.Encoding]::UTF8)
 }
